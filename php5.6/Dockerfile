@@ -1,7 +1,7 @@
 FROM php:5.6-fpm
 MAINTAINER Plopix
 
-RUN apt-get update -q -y && apt-get install -q -y --force-yes --no-install-recommends build-essential libxml2-dev libmemcached-dev libssl-dev libfreetype6-dev \
+RUN apt-get update -q -y && apt-get install -q -y --force-yes --no-install-recommends build-essential libxml2-dev libmemcached-dev libssl-dev libfreetype6-dev rsync \
     libcurl4-openssl-dev libmagickwand-dev libmagickcore-dev libjpeg62-turbo-dev libmcrypt-dev libxpm-dev libpng12-dev libicu-dev libxslt1-dev ca-certificates openssl \
     mysql-client python openssh-client default-jre curl nodejs unzip git imagemagick wget && \
     update-alternatives --install /usr/bin/node nodejs /usr/bin/nodejs 100 && \
