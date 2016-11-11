@@ -17,7 +17,7 @@ RUN docker-php-ext-configure mysqli --with-mysqli=mysqlnd && \
     docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ --with-png-dir=/usr/include/ --with-xpm-dir=/usr/include/ --enable-gd-native-ttf --enable-gd-jis-conv && \
     echo "autodetect" | pecl install imagick && \
     echo "no" | pecl install mongodb && \
-    docker-php-ext-enable memcached mongodb opcache && \
+    docker-php-ext-enable memcached mongodb opcache imagick && \
     docker-php-ext-install mysqli pdo_mysql iconv mcrypt exif gd pcntl intl curl xsl xml json zip
 
 CMD ["php-fpm"]

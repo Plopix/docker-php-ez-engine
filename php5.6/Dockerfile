@@ -15,7 +15,7 @@ RUN docker-php-ext-configure mysqli --with-mysqli=mysqlnd && \
     echo "autodetect" | pecl install imagick && \
     echo "yes  --disable-memcached-sasl" | pecl install memcached && \
     echo "no" | pecl install mongodb mongo && \
-    docker-php-ext-enable memcached mongodb mongo opcache && \
+    docker-php-ext-enable memcached mongodb mongo opcache imagick && \
     docker-php-ext-install mysql mysqli pdo_mysql iconv mcrypt exif gd pcntl intl curl xsl xml json zip
 
 CMD ["php-fpm"]
