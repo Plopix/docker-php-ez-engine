@@ -3,10 +3,13 @@ MAINTAINER Plopix
 
 RUN apt-get update -q -y && apt-get install -q -y --force-yes --no-install-recommends build-essential libxml2-dev libmemcached-dev libmemcached11 libssl-dev libfreetype6-dev rsync \
     libcurl4-openssl-dev libmagickwand-dev libmagickcore-dev libjpeg62-turbo-dev libmcrypt-dev libxpm-dev libpng12-dev libicu-dev libxslt1-dev ca-certificates openssl \
-    mysql-client python openssh-client default-jre curl nodejs unzip git imagemagick wget && \
-    update-alternatives --install /usr/bin/node nodejs /usr/bin/nodejs 100 && \
+    mysql-client python openssh-client default-jre curl unzip git imagemagick wget && \
     rm -rf /var/lib/apt/lists/* && \
     mkdir -p /root/.ssh && ssh-keyscan -H github.com >> /etc/ssh/ssh_known_hosts
+
+RUN curl -s https://deb.nodesource.com/setup_7.x | bash -
+RUN apt-get install -q -y --force-yes --no-install-recommends nodejs && npm install -g uglify-js && npm install -g uglifycss
+
 
 RUN git clone https://github.com/php-memcached-dev/php-memcached /usr/src/php/ext/memcached && cd /usr/src/php/ext/memcached && git checkout -b php7 origin/php7 \
     && docker-php-ext-configure memcached && docker-php-ext-install memcached
