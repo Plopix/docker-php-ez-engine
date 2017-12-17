@@ -1,27 +1,30 @@
 FROM php:7.2-fpm
 MAINTAINER Plopix
 
-RUN apt-get update -q -y && apt-get install -q -y --force-yes --no-install-recommends build-essential libxml2-dev libmemcached-dev libmemcached11 libssl-dev libfreetype6-dev rsync \
-    libcurl4-openssl-dev libmagickwand-dev libmagickcore-dev libjpeg62-turbo-dev libmcrypt-dev libxpm-dev libpng12-dev libicu-dev libxslt1-dev ca-certificates openssl \
-    mysql-client python openssh-client default-jre curl unzip git imagemagick wget && \
+RUN mkdir -p /usr/share/man/man1 && apt-get update -q -y && apt-get install -q -y --allow-downgrades --allow-remove-essential --allow-change-held-packages --no-install-recommends build-essential libxml2-dev libmemcached-dev libmemcached11 libssl-dev libfreetype6-dev rsync \
+    libcurl4-openssl-dev libmagickwand-dev libmagickcore-dev libjpeg62-turbo-dev libmcrypt-dev libxpm-dev libpng-dev libicu-dev libxslt1-dev ca-certificates openssl \
+    mysql-client python openssh-client default-jre default-jre-headless curl unzip git imagemagick wget gnupg jpegoptim && \
     rm -rf /var/lib/apt/lists/* && \
     mkdir -p /root/.ssh && ssh-keyscan -H github.com >> /etc/ssh/ssh_known_hosts
 
-RUN curl -s https://deb.nodesource.com/setup_7.x | bash -
-RUN apt-get install -q -y --force-yes --no-install-recommends nodejs && npm install -g uglify-js && npm install -g uglifycss
+RUN curl -s https://deb.nodesource.com/setup_8.x | bash -
+RUN apt-get install -q -y --allow-downgrades --allow-remove-essential --allow-change-held-packages --no-install-recommends nodejs && npm install -g uglify-js && npm install -g uglifycss
 
-
-RUN git clone https://github.com/php-memcached-dev/php-memcached /usr/src/php/ext/memcached && cd /usr/src/php/ext/memcached && git checkout -b php7 origin/php7 \
-    && docker-php-ext-configure memcached && docker-php-ext-install memcached
+ADD http://pngquant.org/pngquant-2.11.0-src.tar.gz /usr/src
+RUN cd /usr/src && \
+    tar xvzf pngquant-2.11.0-src.tar.gz && \
+    cd pngquant-2.11.0 && make && make install && \
+    cd .. && rm pngquant-2.11.0-src.tar.gz && rm -rf pngquant-2.11.0
 
 RUN docker-php-ext-configure mysqli --with-mysqli=mysqlnd && \
     docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd && \
     docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ --with-png-dir=/usr/include/ --with-xpm-dir=/usr/include/ --enable-gd-native-ttf --enable-gd-jis-conv && \
     echo "autodetect" | pecl install imagick && \
     echo "no" | pecl install mongodb && \
-    pecl install redis-3.1.1 && \
+    echo "no" | pecl install redis && \
+    echo "no" | pecl install memcached && \
     docker-php-ext-enable memcached mongodb opcache imagick redis && \
-    docker-php-ext-install mysqli pdo_mysql iconv mcrypt exif gd pcntl intl curl xsl xml json zip
+    docker-php-ext-install mysqli pdo_mysql iconv exif gd pcntl intl curl xsl xml json zip
 
 RUN curl -A "Docker" -o /tmp/blackfire-probe.tar.gz -D - -L -s https://blackfire.io/api/v1/releases/probe/php/linux/amd64/$(php -r "echo PHP_MAJOR_VERSION.PHP_MINOR_VERSION;") && \
     tar zxpf /tmp/blackfire-probe.tar.gz -C /tmp && \
