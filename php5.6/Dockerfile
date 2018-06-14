@@ -18,4 +18,6 @@ RUN docker-php-ext-configure mysqli --with-mysqli=mysqlnd && \
     docker-php-ext-enable memcached mongodb mongo opcache imagick && \
     docker-php-ext-install mysql mysqli pdo_mysql iconv mcrypt exif gd pcntl intl curl xsl xml json zip
 
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
 CMD ["php-fpm"]
