@@ -1,14 +1,14 @@
 FROM php:7.1-fpm
 MAINTAINER Plopix
 
-RUN apt-get update -q -y && apt-get install -q -y --force-yes --no-install-recommends build-essential libxml2-dev libmemcached-dev libmemcached11 libssl-dev libfreetype6-dev rsync \
-    libcurl4-openssl-dev libmagickwand-dev libmagickcore-dev libjpeg62-turbo-dev libmcrypt-dev libxpm-dev libpng12-dev libicu-dev libxslt1-dev ca-certificates openssl \
-    mysql-client python openssh-client default-jre curl unzip git imagemagick wget gnupg jpegoptim && \
+RUN apt-get update -q -y && apt-get install -q -y --allow-downgrades --allow-remove-essential --allow-change-held-packages --no-install-recommends build-essential libxml2-dev libmemcached-dev libmemcached11 libssl-dev libfreetype6-dev rsync \
+    libcurl4-openssl-dev libmagickwand-dev libmagickcore-dev libjpeg62-turbo-dev libmcrypt-dev libxpm-dev libpng-dev libicu-dev libxslt1-dev ca-certificates openssl \
+    mysql-client python openssh-client default-jre default-jre-headless curl unzip git imagemagick wget gnupg jpegoptim && \
     rm -rf /var/lib/apt/lists/* && \
     mkdir -p /root/.ssh && ssh-keyscan -H github.com >> /etc/ssh/ssh_known_hosts
 
 RUN curl -s https://deb.nodesource.com/setup_8.x | bash -
-RUN apt-get install -q -y --force-yes --no-install-recommends nodejs && npm install -g uglify-js && npm install -g uglifycss
+RUN apt-get install -q -y --allow-downgrades --allow-remove-essential --allow-change-held-packages --no-install-recommends nodejs && npm install -g uglify-js && npm install -g uglifycss
 
 ADD http://pngquant.org/pngquant-2.11.0-src.tar.gz /usr/src
 RUN cd /usr/src && \
