@@ -1,7 +1,7 @@
 FROM php:7.1-fpm
 MAINTAINER Plopix
 
-RUN apt-get update -q -y && apt-get install -q -y --no-install-recommends build-essential libxml2-dev libmemcached-dev libmemcached11 libssl-dev libfreetype6-dev rsync \
+RUN mkdir -p /usr/share/man/man1 && apt-get update -q -y && apt-get install -q -y --no-install-recommends build-essential libxml2-dev libmemcached-dev libmemcached11 libssl-dev libfreetype6-dev rsync \
     libcurl4-openssl-dev libmagickwand-dev libmagickcore-dev libjpeg62-turbo-dev libmcrypt-dev libxpm-dev libpng-dev libicu-dev libxslt1-dev ca-certificates openssl \
     mysql-client python openssh-client default-jre default-jre-headless curl unzip git imagemagick wget gnupg jpegoptim && \
     rm -rf /var/lib/apt/lists/* && \
