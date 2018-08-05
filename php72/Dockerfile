@@ -23,6 +23,7 @@ RUN docker-php-ext-configure mysqli --with-mysqli=mysqlnd && \
     echo "no" | pecl install mongodb && \
     echo "no" | pecl install redis && \
     echo "no" | pecl install memcached && \
+    pecl install xdebug && \
     docker-php-ext-enable memcached mongodb opcache imagick redis && \
     docker-php-ext-install mysqli pdo_mysql iconv exif gd pcntl intl curl xsl xml json zip
 
