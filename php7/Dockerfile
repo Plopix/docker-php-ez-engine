@@ -7,7 +7,7 @@ RUN mkdir -p /usr/share/man/man1 && apt-get update -q -y && apt-get install -q -
     rm -rf /var/lib/apt/lists/* && \
     mkdir -p /root/.ssh && ssh-keyscan -H github.com >> /etc/ssh/ssh_known_hosts
 
-RUN curl -s https://deb.nodesource.com/setup_8.x | bash -
+RUN curl -s https://deb.nodesource.com/setup_11.x | bash -
 RUN apt-get install -q -y --no-install-recommends nodejs && npm install -g uglify-js && npm install -g uglifycss
 
 ADD http://pngquant.org/pngquant-2.11.0-src.tar.gz /usr/src
