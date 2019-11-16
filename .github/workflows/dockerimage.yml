@@ -15,6 +15,7 @@ jobs:
     - uses: actions/checkout@v1
     - name: Build the Docker image and Publish
       run: |
+          cd php${{ matrix.version }}
           docker build . --file Dockerfile --tag docker.pkg.github.com/plopix/docker-php-ez-engine/${{ matrix.version }}:latest
           docker login docker.pkg.github.com --username plopix -p ${{ secrets.GITHUB_TOKEN }}
           docker push docker.pkg.github.com/plopix/docker-php-ez-engine/${{ matrix.version }}:latest
