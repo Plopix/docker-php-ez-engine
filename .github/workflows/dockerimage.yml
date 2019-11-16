@@ -13,9 +13,14 @@ jobs:
             version: [71, 72, 73]
     steps:
     - uses: actions/checkout@v1
-    - name: Build the Docker image and Publish
+    - name: Build the Docker Image and Publish
       run: |
           cd php${{ matrix.version }}
           docker build . --file Dockerfile --tag docker.pkg.github.com/plopix/docker-php-ez-engine/php-${{ matrix.version }}:latest
           docker login docker.pkg.github.com --username plopix -p ${{ secrets.GITHUB_TOKEN }}
           docker push docker.pkg.github.com/plopix/docker-php-ez-engine/php-${{ matrix.version }}:latest
+          docker logout
+          docker tag docker.pkg.github.com/plopix/docker-php-ez-engine/php-${{ matrix.version }}:latest plopix/docker-php-ez-engine:${{ matrix.version }}
+          docker login --username plopix -p ${{ secrets.DOCKER_SECRET }}
+          docker push plopix/docker-php-ez-engine:${{ matrix.version }}
+          docker logout
