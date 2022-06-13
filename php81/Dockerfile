@@ -29,7 +29,7 @@ RUN docker-php-ext-configure mysqli --with-mysqli=mysqlnd && \
 RUN docker-php-ext-install intl xsl zip
 
 RUN version=$(php -r "echo PHP_MAJOR_VERSION.PHP_MINOR_VERSION;") && \
-     architecture=$(uname -m) && \
+     architecture=amd64 && \
      curl -A "Docker" -o /tmp/blackfire-probe.tar.gz -D - -L -s https://blackfire.io/api/v1/releases/probe/php/linux/$architecture/$version && \
      tar zxpf /tmp/blackfire-probe.tar.gz -C /tmp && \
      mv /tmp/blackfire-*.so $(php -r "echo ini_get('extension_dir');")/blackfire.so && rm /tmp/blackfire-probe.tar.gz
